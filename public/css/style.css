@@ -1,0 +1,13 @@
+.button-dash{
+margin:10px;
+height: 180px;
+width: 180px;
+color: white;
+border-radius: 10px;
+padding-top: 70px;
+text-align: center;
+font-weight: bold;
+}
+.button-dash a {
+    color:white;
+}

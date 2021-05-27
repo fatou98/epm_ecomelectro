@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DashboardController!{% endblock %}
+
+{% block body %}
+<div class="container">
+
+  <div class="row">
+    <div class="col-3">
+    <div class="bg-primary button-dash">
+        <a href="/user">
+
+    Gestion Utilisateur
+    </a>
+    </div>
+    </div>
+    <div class="col-3">
+    <div class="bg-primary button-dash">
+            <a href="/article">
+Gestion article
+</a></div>
+    </div><div class="col-3">
+ <div class="bg-primary button-dash">
+    <a href="/category">
+    Gestion catégorie</a></div>    </div><div class="col-3">
+    <div class="bg-primary button-dash">
+        <a href="/commande">
+    Gestion commande
+    </a>
+    </div>
+    </div>
+  </div>
+  </div>
+{% endblock %}
