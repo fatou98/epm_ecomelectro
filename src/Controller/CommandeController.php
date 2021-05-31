@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Commande;
 use App\Form\CommandeType;
 use App\Repository\CommandeRepository;
+use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,26 +27,29 @@ class CommandeController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="commande_new", methods={"GET","POST"})
+     * @Route("/new/{idart}/{qte}", name="commande_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request,$idart,$qte,ArticleRepository $articleRepository): Response
     {
         $commande = new Commande();
-        $form = $this->createForm(CommandeType::class, $commande);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($commande);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('commande_index');
+        $user=$this->getUser();
+         
+    
+        $commande->setFirstname($user->getFirstname());
+        $commande->setLastname($user->getLastname());
+        if($user->getAdress()==null){
+            $commande->setAdress("Non défini");
+        }else{
+        $commande->setAdress($user->getAdress());
         }
+        $commande->setQuantity($qte);
+        $commande->setArticle($articleRepository->findOneBy(["id"=>$idart]));
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($commande);
+        $entityManager->flush();
+       
+        return $this->redirectToRoute('home');
 
-        return $this->render('commande/new.html.twig', [
-            'commande' => $commande,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**

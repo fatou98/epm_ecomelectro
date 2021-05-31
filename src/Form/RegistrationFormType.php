@@ -19,11 +19,11 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstname')
-            ->add('lastname')
-            ->add('adress',TextareaType::class)
-            ->add('mobileNumber',NumberType::class)
-            ->add('email')
+            ->add('firstname',null,['attr'=> ['class'=>'col-lg-12 form-control','style'=>'margin-bottom:10px;']])
+            ->add('lastname',null,['attr'=> ['class'=>'col-lg-12 form-control','style'=>'margin-bottom:10px;']])
+            ->add('adress',TextareaType::class,['attr'=> ['class'=>'col-lg-12 form-control','style'=>'margin-bottom:10px;']])
+            ->add('mobileNumber',NumberType::class,['attr'=> ['class'=>'col-lg-12 form-control','style'=>'margin-bottom:10px;']])
+            ->add('email',null,['attr'=> ['class'=>'col-lg-12 form-control','style'=>'margin-bottom:10px;']])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -47,7 +47,7 @@ class RegistrationFormType extends AbstractType
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
-                ],
+                    ],'attr'=> ['class'=>'col-lg-12 form-control','style'=>'margin-bottom:10px;']
             ])
         ;
     }

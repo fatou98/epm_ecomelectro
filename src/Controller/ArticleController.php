@@ -25,6 +25,30 @@ class ArticleController extends AbstractController
         ]);
     }
 
+     /**
+     * @Route("/articles/{category}", name="article_category", methods={"GET"})
+     */
+    public function article_category(ArticleRepository $articleRepository,$category): Response
+    {
+        if(isset($_POST["submit"])){
+            //return $this->redirectToRoute('article_index',["idart"=>]);
+
+            return $this->render('article/articles_cat.html.twig', [
+                'articles' => $articleRepository->findBy(["category"=>$category]),
+                "quantity"=>$_POST["quantity"]
+            ]);
+        }
+        else{
+            return $this->render('article/articles_cat.html.twig', [
+                'articles' => $articleRepository->findBy(["category"=>$category]),
+                "quantity"=>0
+
+            ]);
+        }
+       
+    }
+
+  
     /**
      * @Route("/new", name="article_new", methods={"GET","POST"})
      */
@@ -83,7 +107,7 @@ class ArticleController extends AbstractController
      */
     public function delete(Request $request, Article $article): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $article->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($article);
             $entityManager->flush();

@@ -26,6 +26,22 @@ class CategoryController extends AbstractController
     }
 
     /**
+     * @Route("/categoryhome", name="categoryhome", methods={"GET"})
+     */
+    public function categoryhome(CategoryRepository $categoryRepository): Response
+    {
+        $categories=$categoryRepository->findAll();
+        foreach ($categories as $cat) {
+            //var_dump($cat);
+            $image=$cat->getImage();
+            $cat->setImage("{{asset('categoryimg/".$image."')}}");
+        }
+        return $this->render('category/categoryhome.html.twig', [
+            'categories' => $categoryRepository->findAll(),
+        ]);
+    }
+
+    /**
      * @Route("/new", name="category_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
@@ -33,8 +49,15 @@ class CategoryController extends AbstractController
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $file = $form['image']->getData();
+            var_dump($file);
+            $this->move($file);
+            var_dump($file);
+            $category->setImage($file->getClientOriginalName());
+            var_dump($file);
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($category);
             $entityManager->flush();
@@ -48,6 +71,21 @@ class CategoryController extends AbstractController
         ]);
     }
 
+    public function move($file)
+    {
+        $directory = "categoryimg";
+
+        // use the original file name
+        $file->move($directory, $file->getClientOriginalName());
+
+        // compute a random name and try to guess the extension (more secure)
+     /*    $extension = $file->guessExtension();
+        if (!$extension) {
+            // extension cannot be guessed
+            $extension = 'bin';
+        } */
+        //$file->move($directory, rand(1, 99999) . '.' . $extension);
+    }
     /**
      * @Route("/{id}", name="category_show", methods={"GET"})
      */
@@ -83,7 +121,7 @@ class CategoryController extends AbstractController
      */
     public function delete(Request $request, Category $category): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($category);
             $entityManager->flush();

@@ -1,26 +1,37 @@
-{% extends 'dashboard/index.html.twig' %}
+{% extends 'home/index.html.twig' %}
 
 {% block title %}Category index{% endblock %}
 
-{% block bodydash %}
+{% block bodyhome %}
 <div class="container">
 
-<div class="row">
+    <h1 style="text-align:center;">Categories</h1>
 
-    <h1 class="col-9">Category index</h1>
-<div class="col-2">
-    <a class="btn btn-primary" href="{{ path('category_new') }}">Create new</a>
+    <br>
 
+    <div class="row">
+            {% for category in categories %}
+
+  <div class="col-2 " style="text-align:center;" >
+  <a href="/article/articles/{{category.id}}">
+                  <img src="{{ asset('categoryimg/2.png' ) }}" height="150px" height="150px" style="border-radius:100%;"/>
+                  <br>
+                <h3>{{ category.name }}</h3>
+</a>
+  </div>
+            {% endfor %}
+            
 </div>
-</div>
+{# 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Name</th>
-                <th>Image</th>
                 <th>designation</th>
                 <th>Description</th>
+                <th>Image</th>
+
                 <th>actions</th>
             </tr>
         </thead>
@@ -31,7 +42,9 @@
                 <td>{{ category.name }}</td>
                 <td>{{ category.designation }}</td>
                 <td>{{ category.description }}</td>
-                <td>{{ category.image }}</td>
+                <td>
+                <img src="{{ asset('categoryimg/2.png' ) }}"/>
+                </td>
                 <td>
                     <a class="btn btn-primary" href="{{ path('category_show', {'id': category.id}) }}">show</a>
                     <a class="btn btn-success" href="{{ path('category_edit', {'id': category.id}) }}">edit</a>
@@ -43,7 +56,7 @@
             </tr>
         {% endfor %}
         </tbody>
-    </table>
+    </table> #}
 
     </div>
 
